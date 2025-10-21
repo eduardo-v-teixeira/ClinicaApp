@@ -82,6 +82,12 @@ public class PacienteService
         }
     }
 
-    private void SaveCha
+    private void SaveChanges()
+    {
+        var json = JsonConvert.SerializeObject(pacientes, Formatting.Indented);
+        File.WriteAllText(FilePath, json);
+    }
+
+
 
 }
