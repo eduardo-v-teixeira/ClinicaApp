@@ -48,5 +48,22 @@ public class PacienteService
     {
         // Validação simples antes de adicionar
         if (string.IsNullOrWhiteSpace(paciente.Nome))
+            throw new ArgumentException("O nome do paciente é obrigatório.");
+
+        if (!ValidarCPF(paciente.CPF))
+            throw new ArgumentException("CPF Inválido.");
+
+        paciente.Id = Guid.NewGuid();
+        pacientes.Add(paciente);
+        SaveChanges();
+    }
+
+    public void Update(Paciente paciente)
+    {
+        var existente = pacientes.FirstOrDefault(p => p.Id == paciente.Id);
+        if (existente == null)
+        {
+
+        }
     }
 }
