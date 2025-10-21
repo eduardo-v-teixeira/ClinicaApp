@@ -61,9 +61,15 @@ public class PacienteService
     public void Update(Paciente paciente)
     {
         var existente = pacientes.FirstOrDefault(p => p.Id == paciente.Id);
-        if (existente == null)
+        if (existente != null)
         {
-
+            existente.Nome = paciente.Nome;
+            existente.CPF = paciente.CPF;
+            existente.Telefone = paciente.Telefone;
+            existente.Endereco = paciente.Endereco;
+            existente.DataNascimento = paciente.DataNascimento;
+            SaveChanges();
         }
     }
+
 }
