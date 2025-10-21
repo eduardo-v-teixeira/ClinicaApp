@@ -72,4 +72,16 @@ public class PacienteService
         }
     }
 
+    public void Delete(Guid id)
+    {
+        var paciente = pacientes.FirstOrDefault(p => p.Id == id);
+        if (paciente != null)
+        {
+            pacientes.Remove(paciente);
+            SaveChanges();
+        }
+    }
+
+    private void SaveCha
+
 }
