@@ -66,8 +66,45 @@ public class MedicoService
         return medicos
             .Where(m => m.Especialidade != null && m.Especialidade
             .Contains(especialidade, StringComparison.OrdinalIgnoreCase)).ToList();
+    }
 
+    //Adiciona um novo medico (com validação simples)
+    public void Add(Medico medico)
+    {
+        if (string.IsNullOrWhiteSpace(medico.Nome))
+            throw new ArgumentException("O nome do medico é obrigatorio.");
 
+        if (string.IsNullOrWhiteSpace(medico.CRM))
+            throw new ArgumentException("o CRM do medico é obrigatiorio.");
+    
+        //evita cadastro duplicado por CRM
+        if (medicos.Any(m => m.CRM.Equals(medico.CRM, StringComparison.OrdinalIgnoreCase)))
+            throw new InvalidOperationException("Já existe um médico cadastrado com esse CRM.");
+
+        medico.Id = Guid.NewGuid();
+        medicos.Add(medico);
+        SaveChanges();
+    }
+
+    //Atualiza um medico existente (procura por ID)
+    public void Update(Medico medico)
+    {
+        var existente = medicos.FirstOrDefault(m => m.Id == medico.Id);
+        if (existente != null)
+        {
+            existente.Nome = medico.Nome;
+            existente.CRM = medico.CRM;
+            existente.Especialidade = medico.Especialidade;
+            existente.Telefone = medico.Telefone;
+            SaveChanges();
+        }
+    }
+
+    //Salva as mudanças no arquivo JSON
+    private void SaveChanges()
+    {
+        var json = JsonConvert.SerializeObject(medicos, Formatting.Indented);
+        File.WriteAllText(FilePath, json);
     }
 
 }
