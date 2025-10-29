@@ -21,6 +21,38 @@ public class MedicoService
         var assemblyDirectory = Path.GetDirectoryName(assemblyLocation) ?? "";
 
         // sobe 3 niveis a partir do bin/Debug/net8.0 para chegar na raiz do projeto
+        var projectDirectory = Path.GetFullPath(Path.Combine(assemblyDirectory, "..", "..", ".."));
 
+        //pasta onde os jsons serão salvos
+        var dataDirectory = Path.Combine(projectDirectory, "Data");
+
+        //Arquivo especifico para médicos
+        FilePath = Path.Combine(dataDirectory, "Medicos.Json");
+
+        //Gartnate que a pasta existe e evita DirectoryNotFoundException
+        if (!Directory.Exists(dataDirectory))
+        {
+            Directory.CreateDirectory(dataDirectory);
+        }
+
+        // Se o arquivo já existir, ler os dados
+        if (File.Exists(FilePath))
+        {
+            var json = File.ReadAllText(FilePath);
+            medicos = JsonConvert.DeserializeObject<List<Medico>>(json) ?? new List<Medico>();
+        }
+        else
+        {
+            medicos = new List<Medico>();
+            SaveChanges();
+        }
     }
+
+    //Retorna todos os medicos
+
+    public List<Medico> GetAll()
+    {
+        return medicos;
+    }
+
 }
