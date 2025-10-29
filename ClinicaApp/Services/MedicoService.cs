@@ -16,7 +16,7 @@ public class MedicoService
     {
         // Local do assembly (DLL/ Exe) que está sendo executado
         var assemblyLocation = System.Reflection.Assembly.GetExecutingAssembly().Location;
-        
+
         // Diretório do assembly
         var assemblyDirectory = Path.GetDirectoryName(assemblyLocation) ?? "";
 
@@ -53,6 +53,21 @@ public class MedicoService
     public List<Medico> GetAll()
     {
         return medicos;
+    }
+
+    // busca medicos por especialidade
+
+    public List<Medico> GetByEspecialidade(string especialidade)
+    {
+        if (string.IsNullOrWhiteSpace(especialidade))
+
+            return medicos;
+
+        return medicos
+            .Where(m => m.Especialidade != null && m.Especialidade
+            .Contains(especialidade, StringComparison.OrdinalIgnoreCase)).ToList();
+
+
     }
 
 }
