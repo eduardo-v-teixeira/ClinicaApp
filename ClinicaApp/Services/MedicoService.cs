@@ -93,6 +93,7 @@ public class MedicoService
         if (existente != null)
         {
             existente.Nome = medico.Nome;
+
             existente.CRM = medico.CRM;
             existente.Especialidade = medico.Especialidade;
             existente.Telefone = medico.Telefone;
